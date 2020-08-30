@@ -10,6 +10,9 @@ confinement: classic
 
 apps:
   slurm-http-config:
+    environment:
+      PYTHONPATH: $SNAP/usr/lib/python3.8/
+      LD_LIBRARY_PATH: $SNAP/usr/lib/:$SNAP/usr/lib/x86_64-linux-gnu/
     command: bin/uwsgi --processes 4 --threads 2 --http :9999 --wsgi-file $SNAP/app.py
     daemon: simple
 
@@ -17,7 +20,11 @@ parts:
   python:
     plugin: python
     python-packages:
+      - wheel
       - uwsgi
+
+    stage-packages:
+      - libpython3.8
 
   slurm-http-config:
     plugin: dump
